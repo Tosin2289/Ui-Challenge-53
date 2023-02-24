@@ -1,115 +1,337 @@
-import 'package:flutter/material.dart';
+import "package:flutter/material.dart";
+import "package:flutter/services.dart";
 
 void main() {
-  runApp(const MyApp());
+  runApp(const MaterialApp(
+    debugShowCheckedModeBanner: false,
+    home: Home(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      debugShowCheckedModeBanner: false,
+      home: Home(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+class Home extends StatelessWidget {
+  const Home({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+    SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]);
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          title: Text(
+            "Local screencast",
+            style: TextStyle(
+                color: Colors.black,
+                fontSize: MediaQuery.of(context).size.width / 15,
+                fontWeight: FontWeight.w600),
+          ),
+          centerTitle: true,
+          leading: IconButton(
+              onPressed: () {},
+              icon: Icon(
+                Icons.arrow_back,
+                color: Colors.black,
+                size: MediaQuery.of(context).size.width / 12.5,
+              )),
+          actions: [
+            Container(
+              alignment: Alignment.center,
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  Positioned(
+                    child: Icon(
+                      Icons.shopping_cart_outlined,
+                      size: MediaQuery.of(context).size.width / 10,
+                      color: Colors.black,
+                    ),
+                  ),
+                  Positioned(
+                    top: MediaQuery.of(context).size.width / 50 - 15,
+                    right: MediaQuery.of(context).size.width / 50 - 5,
+                    child: CircleAvatar(
+                      child: Text(
+                        "1",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      backgroundColor: Colors.blue[300],
+                      radius: MediaQuery.of(context).size.width / 40,
+                    ),
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
+        body: const Body(),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
+    );
+  }
+}
+
+//Body
+class Body extends StatefulWidget {
+  const Body({Key? key}) : super(key: key);
+
+  @override
+  State<Body> createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
+  List productN = [
+    "Fitting dress",
+    "Cotton T-shirt",
+    "Jean jacket",
+    "Top T-shirt",
+    "Crop top"
+  ];
+  List productP = ["199.00", "59.00", "109.00", "100.00", "150.00"];
+  List productI = [
+    "assets/img1.jpeg",
+    "assets/img5.jpg",
+    "assets/img2.jpg",
+    "assets/img3.jpg",
+    "assets/img4.jpg"
+  ];
+  List products = ["L", " M", "S", "XL", "L"];
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width / 20),
+      child: SingleChildScrollView(
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+          children: [
+            SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height / 2.3,
+              child: ListView.builder(
+                  itemCount: productN.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      contentPadding: EdgeInsets.all(1),
+                      title: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: MediaQuery.of(context).size.width / 5,
+                            height: MediaQuery.of(context).size.height / 9,
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: AssetImage("${productI[index]}"),
+                                    fit: BoxFit.fill),
+                                borderRadius: BorderRadius.circular(20)),
+                          ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width / 30,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text(
+                                "${productN[index]}",
+                                style: TextStyle(
+                                    fontSize:
+                                        MediaQuery.of(context).size.width /
+                                            17.5,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Text("\$${productP[index]}",
+                                  style: TextStyle(
+                                      fontSize:
+                                          MediaQuery.of(context).size.width /
+                                              22.5,
+                                      fontWeight: FontWeight.bold)),
+                              Row(children: [
+                                IconButton(
+                                  onPressed: () {
+                                    print("Ok Done-");
+                                  },
+                                  icon: Icon(Icons.remove_sharp),
+                                  splashColor: Colors.transparent,
+                                ),
+                                Text("1"),
+                                IconButton(
+                                  onPressed: () {
+                                    print("Ok Done+");
+                                  },
+                                  icon: Icon(Icons.add),
+                                  splashColor: Colors.transparent,
+                                ),
+                              ]),
+                            ],
+                          ),
+                        ],
+                      ),
+                      trailing: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Text(
+                            "${products[index]}",
+                            style: TextStyle(
+                                fontSize:
+                                    MediaQuery.of(context).size.width / 25,
+                                color: Colors.blue[200]),
+                          ),
+                          SizedBox(
+                              height: MediaQuery.of(context).size.height / 25,
+                              width: MediaQuery.of(context).size.width / 11,
+                              child: IconButton(
+                                onPressed: () {
+                                  print("Ok Done Delete");
+                                },
+                                icon: Icon(
+                                  Icons.delete_rounded,
+                                  color: Colors.pink[100],
+                                  size: MediaQuery.of(context).size.width / 14,
+                                ),
+                              )),
+                        ],
+                      ),
+                    );
+                  }),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+            SizedBox(
+              height: MediaQuery.of(context).size.height / 45,
+            ),
+            Container(
+              padding: EdgeInsets.all(MediaQuery.of(context).size.width / 100),
+              alignment: Alignment.center,
+              height: MediaQuery.of(context).size.height / 11,
+              decoration: BoxDecoration(
+                  color: Colors.blue.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(20)),
+              child: TextField(
+                cursorHeight: MediaQuery.of(context).size.height / 25,
+                decoration: InputDecoration(
+                  hintText: "Promo Code",
+                  border: InputBorder.none,
+                  suffixIcon: ElevatedButton(
+                    onPressed: () {
+                      print("Ok Done Apply");
+                    },
+                    child: Text("Apply",
+                        style: TextStyle(
+                          fontSize: MediaQuery.of(context).size.width / 25,
+                        )),
+                    style: ElevatedButton.styleFrom(
+                        primary: Colors.black,
+                        fixedSize: Size(MediaQuery.of(context).size.width / 4,
+                            MediaQuery.of(context).size.height / 10),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20))),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height / 45,
+            ),
+            Column(children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Sub Total",
+                    style: TextStyle(
+                        fontSize: MediaQuery.of(context).size.width / 20,
+                        color: Colors.grey),
+                  ),
+                  Expanded(child: Divider()),
+                  Text(
+                    "\$367.00",
+                    style: TextStyle(
+                        fontSize: MediaQuery.of(context).size.width / 15,
+                        fontWeight: FontWeight.w600),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height / 50,
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Shipping",
+                    style: TextStyle(
+                        fontSize: MediaQuery.of(context).size.width / 20,
+                        color: Colors.grey),
+                  ),
+                  Expanded(child: Divider()),
+                  Text(
+                    "\$4.00",
+                    style: TextStyle(
+                        fontSize: MediaQuery.of(context).size.width / 15,
+                        fontWeight: FontWeight.w600),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height / 50,
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Bodg Total",
+                    style: TextStyle(
+                        fontSize: MediaQuery.of(context).size.width / 20,
+                        color: Colors.grey),
+                  ),
+                  Expanded(child: Divider()),
+                  Text(
+                    "\$371.00",
+                    style: TextStyle(
+                        fontSize: MediaQuery.of(context).size.width / 15,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.pink[100]),
+                  ),
+                ],
+              ),
+            ]),
+            SizedBox(
+              height: MediaQuery.of(context).size.height / 45,
+            ),
+            ElevatedButton(
+              onPressed: () {
+                print("Ok Done Checkout");
+              },
+              child: Text(
+                "Proceed to Checkout",
+                style: TextStyle(
+                  fontSize: MediaQuery.of(context).size.width / 25,
+                ),
+              ),
+              style: ElevatedButton.styleFrom(
+                  primary: Colors.black,
+                  fixedSize: Size(MediaQuery.of(context).size.width,
+                      MediaQuery.of(context).size.height / 11),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20))),
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
